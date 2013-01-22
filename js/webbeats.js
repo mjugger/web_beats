@@ -23,17 +23,17 @@ var webBeats = (function(){
 		player.id = 'webBeatsPlayer';player.className = defaults.skin;
 
 		var elements = [
-			{el:'div',id:'play',evt:'click',fn:test1},
-			{el:'div',id:'next',evt:'click',fn:test1},
-			{el:'div',id:'previous',evt:'click',fn:test1},
-			{el:'div',id:'love',evt:'click',fn:test1}
+			{el:'div',id:'love',classes:' coreEls',evt:'click',fn:test1},
+			{el:'div',id:'next',classes:' coreEls',evt:'click',fn:test1},
+			{el:'div',id:'previous',classes:' coreEls',evt:'click',fn:test1},
+			{el:'div',id:'play',classes:' coreEls',evt:'click',fn:test1}
 		];
 
 		var ln = elements.length;
 
 		for (var i = ln - 1; i >= 0; i--) {
 			var el = document.createElement(elements[i].el);
-			el.id = elements[i].id;el.className = defaults.skin;
+			el.id = elements[i].id;el.className = defaults.skin+elements[i].classes;
 			el.addEventListener(elements[i].evt,elements[i].fn,true);
 			player.appendChild(el);
 		};
