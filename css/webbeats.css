@@ -55,9 +55,9 @@
 }
 
 .metro:hover{
-	background-color: #a200ff;
-	transition: background-color 0.5s linear;
-      -moz-transition: background-color 0.5s linear;    /* FF3.7+ */
-      -o-transition: background-color 0.5s linear;      /* Opera 10.5 */
-      -webkit-transition: background-color 0.5s linear; /* Saf3.2+, Chrome */
+	background-color: #a200ff !important;
+	transition: background-color 0.3s linear;
+      -moz-transition: background-color 0.3s linear;    /* FF3.7+ */
+      -o-transition: background-color 0.3s linear;      /* Opera 10.5 */
+      -webkit-transition: background-color 0.3s linear; /* Saf3.2+, Chrome */
 }

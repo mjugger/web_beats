@@ -3,7 +3,7 @@ var webBeats = (function(){
 	// holds all the default settings for the player.
 	var defaults = {
 		view:'closed', //Sets the initial view.
-		skin:'metro', //Sets the initial skin classes.
+		skin:'metro', //Sets the initial skin class.
 		song:'', // Set the song the player will start with (url to the songs json).
 		visual:null
 	}
@@ -12,16 +12,17 @@ var webBeats = (function(){
 	// Saves me hassle of having to find/replace tightly coupled library methods
 	// if i ever want to change libraries.
 	var tween = {}
-
-	// used for removing all events.
-	var events = []
+	
+	// Caches all player elements and their events.
+	var cache = {}
 
 	// constructs all player html elements.
 	function buildPlayer(){
 		var docFrag = document.createDocumentFragment();
 		var player = document.createElement('div');
 		player.id = 'webBeatsPlayer';player.className = defaults.skin;
-
+		
+		// Contains blueprint like objects that represent the player dom elements.
 		var elements = [
 			{el:'div',id:'love',classes:' coreEls',evt:'click',fn:test1},
 			{el:'div',id:'next',classes:' coreEls',evt:'click',fn:test1},
@@ -30,11 +31,21 @@ var webBeats = (function(){
 		];
 
 		var ln = elements.length;
-
+		
+		// builds elements and assigns events.
 		for (var i = ln - 1; i >= 0; i--) {
 			var el = document.createElement(elements[i].el);
 			el.id = elements[i].id;el.className = defaults.skin+elements[i].classes;
 			el.addEventListener(elements[i].evt,elements[i].fn,true);
+			
+			//Begin cache object construction and population.
+			cache[elements[i].id] = el;
+			cache[elements[i].id].listener = [];
+			cache[elements[i].id].listener.push(elements[i].fn);
+			var evt = cache[elements[i].id].events = [];
+			evt.push(elements[i].evt);
+			//End cache object construction and population.
+			
 			player.appendChild(el);
 		};
 
@@ -42,8 +53,20 @@ var webBeats = (function(){
 		document.body.appendChild(docFrag);
 	}
 
-	function test1(){
-		alert('yoyoyoyo');
+	function test1(e){
+		alert(this.id+' '+e.type+'ed');
+	}
+	
+	
+	// Removes all events from all player elements(should be called before player is removed from the dom).
+	function RmAllEvts(){
+		alert('removed');
+		for(var prop in cache){
+			var ln = cache[prop].events.length;
+			for(var i = ln - 1; i >= 0; i--){
+				cache[prop].removeEventListener(cache[prop].events[i], cache[prop].listener[i],true);
+			}
+		}
 	}
 
 	//assigns user specified settings. 
@@ -71,7 +94,6 @@ var webBeats = (function(){
 
   			}
  		}
- 		console.log(window);
 		call.open("POST","php/controller.php",true);
 		call.setRequestHeader("Content-type","application/json");
 		call.send(JSON.stringify(toServer));
@@ -91,6 +113,8 @@ var webBeats = (function(){
 		},
 		
 		// This is used to test any function of this program.
-		test:buildPlayer
+		test1:buildPlayer,
+		
+		test2:RmAllEvts
 	}
 })();
