@@ -3,6 +3,10 @@
 	margin: 0;
 }
 
+body {
+	background-image: url('../imgs/cardboard_flat.png');
+}
+
 #webBeatsPlayer {
 	width: 401px;
 	height: 100px;

@@ -2,9 +2,17 @@ var webBeats = (function(){
 	
 	// holds all the default settings for the player.
 	var defaults = {
+		
 		view:'closed', //Sets the initial view.
+		
 		skin:'metro', //Sets the initial skin class.
+		
 		song:'', // Set the song the player will start with (url to the songs json).
+		
+		storage:'local', // Dictates how playlists are stored.
+		
+		childOf:'body', // Sets parent of player.
+		
 		visual:null
 	}
 	
@@ -20,9 +28,10 @@ var webBeats = (function(){
 	function buildPlayer(){
 		var docFrag = document.createDocumentFragment();
 		var player = document.createElement('div');
-		player.id = 'webBeatsPlayer';player.className = defaults.skin;
+		player.id = 'webBeatsPlayer';player.className = '';
 		
 		// Contains blueprint like objects that represent the player dom elements.
+		//loop reads backwards, add new elements to end of array.
 		var elements = [
 			{el:'div',id:'love',classes:' coreEls',evt:'click',fn:test1},
 			{el:'div',id:'next',classes:' coreEls',evt:'click',fn:test1},
@@ -50,7 +59,13 @@ var webBeats = (function(){
 		};
 
 		docFrag.appendChild(player);
-		document.body.appendChild(docFrag);
+		
+		// Append player to the DOM.
+		if(defaults.childOf == 'body'){
+			document[defaults.childOf].appendChild(docFrag);
+		}else{
+			document.getElementById(defaults.childOf).appendChild(docFrag);
+		}
 	}
 
 	function test1(e){
