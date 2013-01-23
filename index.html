@@ -8,7 +8,10 @@
 	<script>
 		window.onload= function(){
 			webBeats.test1();
-			
+			var x = webBeats.test2({all_songs:true},function(e){
+				console.log('responce = '+ e);
+			});
+			//alert('html file '+x);
 		}
 	</script>
 </head>

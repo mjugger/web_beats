@@ -72,15 +72,21 @@ var webBeats = (function(){
 		alert(this.id+' '+e.type+'ed');
 	}
 	
+	function test22(e){
+		alert( e );
+	}
 	
 	// Removes all events from all player elements(should be called before player is removed from the dom).
 	function RmAllEvts(){
-		alert('removed');
 		for(var prop in cache){
 			var ln = cache[prop].events.length;
 			for(var i = ln - 1; i >= 0; i--){
 				cache[prop].removeEventListener(cache[prop].events[i], cache[prop].listener[i],true);
 			}
+			
+			//Empties event and listener arrays.
+			cache[prop].events = [];
+			cache[prop].listener = [];
 		}
 	}
 
@@ -95,23 +101,37 @@ var webBeats = (function(){
 		
 	}
 	
-	// performs all operations pertaining to server-side development.
-	function serverOps(toServer,callback){
+	
+	
+	
+	// Plays music.
+	function playSong(songUrl){
+		cache.audionNode.src = songUrl;
+	}
+	
+	// Stores and retrieves playlists using php.
+	function playlist_server(toServer,callback){
 		var call = new XMLHttpRequest();
 		call.onreadystatechange=function(){
 
   			if(this.readyState == 4 && this.status == 200){
   				
   				if(callback instanceof Function){
-  					callback();
+  					callback( JSON.parse(this.responseText) );
   				}
-  				alert( this.responseText);
 
   			}
  		}
 		call.open("POST","php/controller.php",true);
+		
 		call.setRequestHeader("Content-type","application/json");
+		
 		call.send(JSON.stringify(toServer));
+	}
+	
+	// Stores and retrieves playlists using localStorage.
+	function playlist_local(){
+	
 	}
 
 	
@@ -130,6 +150,6 @@ var webBeats = (function(){
 		// This is used to test any function of this program.
 		test1:buildPlayer,
 		
-		test2:RmAllEvts
+		test2:playlist_server
 	}
 })();

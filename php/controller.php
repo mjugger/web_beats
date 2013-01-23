@@ -1,4 +1,5 @@
 <?php
+include "model.php";
 
 	class controller {
 
@@ -8,7 +9,17 @@
 		}
 
 		private function router($json){
-			//if($json[''])
+			$model = new model();
+			if($json['all_songs']){
+				
+				echo $model->fetch_songs();
+				
+			}else if($json['playlist']){
+				
+				
+				//echo $pl->
+				
+			}
 		}
 	}
 	
