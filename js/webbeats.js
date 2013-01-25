@@ -16,12 +16,26 @@ var webBeats = (function(){
 		visual:null
 	}
 	
+	// 
+	function init_player(userValues){
+		
+		//creates htmlAudioElement.
+		cache.song = new Audio();
+		
+		config(userValues);
+		
+		buildPlayer();
+		
+		playlist_server({all_songs:true},store_playlists);
+	}
+	
 	// A level of abstraction used for tween libraries.
 	// Saves me hassle of having to find/replace tightly coupled library methods
 	// if i ever want to change libraries.
 	var tween = {}
 	
-	// Caches all player elements and their events.
+	// Caches all player elements, their events, 
+	//and holds values for functions outside their scope.
 	var cache = {}
 
 	// constructs all player html elements.
@@ -67,13 +81,17 @@ var webBeats = (function(){
 			document.getElementById(defaults.childOf).appendChild(docFrag);
 		}
 	}
+	
+	function init_sound(){
+		
+	}
 
 	function test1(e){
 		alert(this.id+' '+e.type+'ed');
 	}
 	
-	function test22(e){
-		alert( e );
+	function store_playlists(playlist){
+		cache[playlist] = playlist;
 	}
 	
 	// Removes all events from all player elements(should be called before player is removed from the dom).
