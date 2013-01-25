@@ -35,7 +35,7 @@ var webBeats = (function(){
 	var tween = {}
 	
 	// Caches all player elements, their events, 
-	//and holds values for functions outside their scope.
+	//and holds values to be used outside a function's scope.
 	var cache = {}
 
 	// constructs all player html elements.
@@ -82,7 +82,7 @@ var webBeats = (function(){
 		}
 	}
 	
-	function init_sound(){
+	function play(){
 		
 	}
 
@@ -90,8 +90,13 @@ var webBeats = (function(){
 		alert(this.id+' '+e.type+'ed');
 	}
 	
-	function store_playlists(playlist){
-		cache[playlist] = playlist;
+	function cache_playlists(playlist){
+		if(playlist.all_songs){
+			cache.all_songs = playlist.all_songs;
+		}else{
+			cache.playlist = playlist;
+		}
+		
 	}
 	
 	// Removes all events from all player elements(should be called before player is removed from the dom).

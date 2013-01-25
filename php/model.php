@@ -10,7 +10,9 @@
 		
 		public function fetch_songs(){
 			$all_songs = $this->read_folder($this->jsonPath);
-			return json_encode((object)$all_songs);
+			//unset($all_songs[0]);
+			$export = array();
+			return json_encode(array('all_songs' => $all_songs));
 			
 		
 		}
@@ -30,7 +32,7 @@
 				$data = array();
 				while(false !== ($entry = readdir($handle))){
 					if( preg_match("/.json/i",$entry)){
-						$json = json_decode(file_get_contents($this->jsonPath.$entry),false);
+						$json = json_decode(file_get_contents($this->jsonPath.$entry),true);
 						//$allSongs[$json['song']['title']] = $json;
 						//$json = file_get_contents($this->jsonPath.$entry);
 						array_push($data,$json);
