@@ -10,7 +10,7 @@
 		
 		public function fetch_songs(){
 			$all_songs = $this->read_folder($this->jsonPath);
-			return json_encode((array)$all_songs);
+			return json_encode((object)$all_songs);
 			
 		
 		}
