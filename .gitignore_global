@@ -39,8 +39,8 @@ Thumbs.db
 
 # Multimedia files #
 ######################
-.mp3
-.mp4
-.ogg
-.wmv
-.wma
+*.mp3
+*.mp4
+*.ogg
+*.wmv
+*.wma
