@@ -34,7 +34,7 @@ var webBeats = (function(){
 	// if i ever want to change libraries.
 	var tween = {}
 	
-	// Caches all player elements, their events, 
+	// Caches all player elements and their events, playlists, 
 	//and holds values to be used outside a function's scope.
 	var cache = {}
 
@@ -43,14 +43,14 @@ var webBeats = (function(){
 		var docFrag = document.createDocumentFragment();
 		var player = document.createElement('div');
 		player.id = 'webBeatsPlayer';player.className = '';
-		
+		cache.nodes = {};
 		// Contains blueprint like objects that represent the player dom elements.
 		//loop reads backwards, add new elements to end of array.
 		var elements = [
 			{el:'div',id:'love',classes:' coreEls',evt:'click',fn:test1},
 			{el:'div',id:'next',classes:' coreEls',evt:'click',fn:test1},
 			{el:'div',id:'previous',classes:' coreEls',evt:'click',fn:test1},
-			{el:'div',id:'play',classes:' coreEls',evt:'click',fn:test1}
+			{el:'div',id:'play',classes:' coreEls',evt:'click',fn:play}
 		];
 
 		var ln = elements.length;
@@ -61,19 +61,19 @@ var webBeats = (function(){
 			el.id = elements[i].id;el.className = defaults.skin+elements[i].classes;
 			el.addEventListener(elements[i].evt,elements[i].fn,true);
 			
-			//Begin cache object construction and population.
-			cache[elements[i].id] = el;
-			cache[elements[i].id].listener = [];
-			cache[elements[i].id].listener.push(elements[i].fn);
-			var evt = cache[elements[i].id].events = [];
+			//Begin cache.nodes object construction and population.
+			cache.nodes[elements[i].id] = el;
+			cache.nodes[elements[i].id].listener = [];
+			cache.nodes[elements[i].id].listener.push(elements[i].fn);
+			var evt = cache.nodes[elements[i].id].events = [];
 			evt.push(elements[i].evt);
-			//End cache object construction and population.
+			//End cache.nodes object construction and population.
 			
 			player.appendChild(el);
 		};
 
 		docFrag.appendChild(player);
-		
+		console.log(cache);
 		// Append player to the DOM.
 		if(defaults.childOf == 'body'){
 			document[defaults.childOf].appendChild(docFrag);
@@ -101,15 +101,15 @@ var webBeats = (function(){
 	
 	// Removes all events from all player elements(should be called before player is removed from the dom).
 	function RmAllEvts(){
-		for(var prop in cache){
-			var ln = cache[prop].events.length;
+		for(var prop in cache.nodes){
+			var ln = cache.nodes[prop].events.length;
 			for(var i = ln - 1; i >= 0; i--){
-				cache[prop].removeEventListener(cache[prop].events[i], cache[prop].listener[i],true);
+				cache.nodes[prop].removeEventListener(cache.nodes[prop].events[i], cache.nodes[prop].listener[i],true);
 			}
 			
 			//Empties event and listener arrays.
-			cache[prop].events = [];
-			cache[prop].listener = [];
+			cache.nodes[prop].events = [];
+			cache.nodes[prop].listener = [];
 		}
 	}
 
@@ -124,13 +124,6 @@ var webBeats = (function(){
 		
 	}
 	
-	
-	
-	
-	// Plays music.
-	function playSong(songUrl){
-		cache.audionNode.src = songUrl;
-	}
 	
 	// Stores and retrieves playlists using php.
 	function playlist_server(toServer,callback){
