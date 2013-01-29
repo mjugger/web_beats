@@ -90,6 +90,10 @@ var webBeats = (function(){
 		cache.nodes.audioNode.autoplay = defaults.auto;
 		cache.nodes.audioNode.preload = 'auto';
 		cache.current_track = 0;
+		cache.nodes.audioNode.addEventListener('ended',next_song,false);
+		cache.nodes.audioNode.addEventListener('error',function(e){
+			console.log(this.error);
+		},false);
 		var ln = cache.all_songs.length;
 		
 		
@@ -98,11 +102,11 @@ var webBeats = (function(){
 		
 			if(cache.all_songs[i].song.title == defaults.song){
 			
-				cache.nodes.audioNode.src = cache.all_songs[i].song.url;
+				play(cache.all_songs[i].song.url);
 			
 			}else if(ln-1 == i && cache.all_songs[i].song.title !== defaults.song){
 			
-				cache.nodes.audioNode.src = cache.all_songs[0].song.url;
+				play(cache.all_songs[0].song.url);
 			}
 		}
 	}
@@ -137,7 +141,7 @@ var webBeats = (function(){
 	
 		// Allows next_song to loop to beginning  after last song 
 		//and previous_song to go to last song when at the beginning.
-		cache.current_track = Math.abs(num)%cache.play_from.length;
+		cache.current_track = num < 0 ? cache.play_from.length-1 : num % cache.play_from.length;
 		
 		//prevents going to first song after last song plays and vice versa.
 		//cache.current_track = Math.max(0,Math.min(num,cache.play_from.length-1));
