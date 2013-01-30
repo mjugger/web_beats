@@ -35,9 +35,7 @@ var webBeats = (function(){
 	
 	// Caches all player elements and their events, playlists, 
 	//and holds values to be used outside a function's scope.
-	var cache = {
-		
-	}
+	var cache = {}
 
 	// constructs all player html elements.
 	function buildPlayer(){
@@ -53,11 +51,9 @@ var webBeats = (function(){
 			{el:'div',id:'previous',classes:' coreEls',evt:'click',fn:previous_song},
 			{el:'div',id:'play',classes:' coreEls',evt:'click',fn:playback}
 		];
-
-		var ln = elements.length;
 		
 		// builds elements and assigns events.
-		for (var i = ln - 1; i >= 0; i--) {
+		for (var ln = elements.length - 1, i = ln; i >= 0; i--) {
 			var el = document.createElement(elements[i].el);
 			el.id = elements[i].id;el.className = defaults.skin+elements[i].classes;
 			el.addEventListener(elements[i].evt,elements[i].fn,true);
@@ -94,11 +90,10 @@ var webBeats = (function(){
 		cache.nodes.audioNode.addEventListener('error',function(e){
 			console.log(this.error);
 		},false);
-		var ln = cache.all_songs.length;
 		
 		
 		//plays the user defined song, else plays the first song from "all_songs".
-		for(var i = 0; i < ln; i++){
+		for(var i = 0, ln = cache.all_songs.length; i < ln; i++){
 		
 			if(cache.all_songs[i].song.title == defaults.song){
 			
@@ -169,8 +164,7 @@ var webBeats = (function(){
 	// Removes all events from all player elements(should be called before player is removed from the dom).
 	function RmAllEvts(){
 		for(var prop in cache.nodes){
-			var ln = cache.nodes[prop].events.length;
-			for(var i = ln - 1; i >= 0; i--){
+			for(var ln = cache.nodes[prop].events.length - 1, i = ln; i >= 0; i--){
 				cache.nodes[prop].removeEventListener(cache.nodes[prop].events[i], cache.nodes[prop].listener[i],true);
 			}
 			
